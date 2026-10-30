@@ -127,3 +127,79 @@ function setCounter(countDownDate) {
     $("#day2").html(Math.floor(days / 10) % 10);
     $("#day3").html(days % 10);
 }
+
+// Native sticky positioning keeps entry/exit continuous. Scroll distance controls
+// the lights in both directions without cancelling input or moving the page.
+function initStatsScroll() {
+    const board = document.querySelector(".hackathonStats-board");
+    if (!board) return;
+    const section = board.closest(".hackathonStats");
+    const content = section.querySelector(".section");
+    const digits = Array.from(board.querySelectorAll(".hackathonStats-digit"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame = null;
+    let travel = 0;
+    let pinTop = 0;
+    let paddingTop = 0;
+
+    const clamp = (value) => Math.max(0, Math.min(1, value));
+
+    function paint() {
+        frame = null;
+        if (reducedMotion.matches) return;
+        const distance = pinTop - section.getBoundingClientRect().top - paddingTop;
+        // Leave a short pause at each end; every digit is fully on before release.
+        const progress = clamp((distance / travel - 0.08) / 0.84);
+        digits.forEach((digit, index) => {
+            const amount = clamp(progress * digits.length - index);
+            const brightness = amount * amount * (3 - 2 * amount);
+            const channel = Math.round(229 * (1 - brightness));
+            digit.style.setProperty(
+                "--stat-segment-color",
+                `rgb(${channel}, ${channel}, ${channel})`
+            );
+            digit.style.setProperty(
+                "--stat-segment-glow",
+                `0 0 5px rgba(245, 166, 35, ${brightness * 0.35})`
+            );
+        });
+    }
+
+    function schedulePaint() {
+        if (frame === null) frame = window.requestAnimationFrame(paint);
+    }
+
+    function measure() {
+        const enabled = !reducedMotion.matches;
+        section.classList.toggle("is-scroll-pinned", enabled);
+        board.classList.toggle("is-scroll-lit", enabled);
+        if (!enabled) {
+            digits.forEach((digit) => {
+                digit.style.removeProperty("--stat-segment-color");
+                digit.style.removeProperty("--stat-segment-glow");
+            });
+            return;
+        }
+        travel = Math.max(720, window.innerHeight * 1.15);
+        pinTop = Math.max(88, (window.innerHeight - content.offsetHeight) / 2);
+        paddingTop = parseFloat(window.getComputedStyle(section).paddingTop) || 0;
+        section.style.setProperty(
+            "--stats-content-height",
+            `${content.offsetHeight}px`
+        );
+        section.style.setProperty("--stats-travel", `${travel}px`);
+        section.style.setProperty("--stats-pin-top", `${pinTop}px`);
+        schedulePaint();
+    }
+
+    window.addEventListener("scroll", schedulePaint, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("pageshow", measure);
+    reducedMotion.addEventListener("change", measure);
+    if (typeof ResizeObserver !== "undefined") {
+        new ResizeObserver(measure).observe(content);
+    }
+    measure();
+}
+
+$(document).ready(initStatsScroll);
