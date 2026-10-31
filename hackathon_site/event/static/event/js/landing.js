@@ -136,6 +136,22 @@ function initStatsScroll() {
     const section = board.closest(".hackathonStats");
     const content = section.querySelector(".section");
     const digits = Array.from(board.querySelectorAll(".hackathonStats-digit"));
+    const pins = Array.from(board.querySelectorAll(".hackathonStats-pin")).map(
+        (pin) => {
+            const boxDigits = pin
+                .closest(".hackathonStats-stat")
+                .querySelectorAll(".hackathonStats-digit");
+            const isRight =
+                pin.classList.contains("hackathonStats-pin--topRight") ||
+                pin.classList.contains("hackathonStats-pin--bottomRight");
+            return {
+                element: pin,
+                digitIndex: digits.indexOf(
+                    boxDigits[isRight ? boxDigits.length - 1 : 0]
+                ),
+            };
+        }
+    );
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = null;
     let travel = 0;
@@ -148,12 +164,15 @@ function initStatsScroll() {
         frame = null;
         if (reducedMotion.matches) return;
         const distance = pinTop - section.getBoundingClientRect().top - paddingTop;
-        // Leave a short pause at each end; every digit is fully on before release.
+        // The lighting sequence ends before the extra reading space begins.
         const progress = clamp((distance / travel - 0.08) / 0.84);
-        digits.forEach((digit, index) => {
+        const brightnesses = digits.map((digit, index) => {
             const amount = clamp(progress * digits.length - index);
-            const brightness = amount * amount * (3 - 2 * amount);
-            const channel = Math.round(229 * (1 - brightness));
+            return amount * amount * (3 - 2 * amount);
+        });
+        digits.forEach((digit, index) => {
+            const brightness = brightnesses[index];
+            const channel = Math.round(240 * (1 - brightness));
             digit.style.setProperty(
                 "--stat-segment-color",
                 `rgb(${channel}, ${channel}, ${channel})`
@@ -162,6 +181,9 @@ function initStatsScroll() {
                 "--stat-segment-glow",
                 `0 0 5px rgba(245, 166, 35, ${brightness * 0.35})`
             );
+        });
+        pins.forEach(({ element, digitIndex }) => {
+            element.style.setProperty("--pin-power", brightnesses[digitIndex]);
         });
     }
 
@@ -174,6 +196,7 @@ function initStatsScroll() {
         section.classList.toggle("is-scroll-pinned", enabled);
         board.classList.toggle("is-scroll-lit", enabled);
         if (!enabled) {
+            pins.forEach(({ element }) => element.style.removeProperty("--pin-power"));
             digits.forEach((digit) => {
                 digit.style.removeProperty("--stat-segment-color");
                 digit.style.removeProperty("--stat-segment-glow");
@@ -187,7 +210,10 @@ function initStatsScroll() {
             "--stats-content-height",
             `${content.offsetHeight}px`
         );
-        section.style.setProperty("--stats-travel", `${travel}px`);
+        // Extend the pinned section without slowing the lighting sequence.
+        // Keep the fully lit stats centered for another ~two-thirds of a screen.
+        const readingSpace = Math.max(420, window.innerHeight * 0.65);
+        section.style.setProperty("--stats-travel", `${travel + readingSpace}px`);
         section.style.setProperty("--stats-pin-top", `${pinTop}px`);
         schedulePaint();
     }
