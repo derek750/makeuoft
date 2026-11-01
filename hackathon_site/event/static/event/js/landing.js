@@ -127,3 +127,38 @@ function setCounter(countDownDate) {
     $("#day2").html(Math.floor(days / 10) % 10);
     $("#day3").html(days % 10);
 }
+
+// Decorative scroll lighting is independent of the future day/time status logic.
+function initScheduleLighting() {
+    const schedule = document.querySelector(".schedule");
+    if (!schedule) return;
+    const pins = Array.from(schedule.querySelectorAll(".schedulePin"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const clamp = (value) => Math.max(0, Math.min(1, value));
+    let frame = null;
+
+    function paint() {
+        frame = null;
+        const top = schedule.getBoundingClientRect().top;
+        const start = window.innerHeight * 0.85;
+        const distance = Math.max(120, window.innerHeight * 0.2);
+        // All four outer LEDs power on together as the schedule enters view.
+        // Reduced motion uses an immediate state change, not permanently dark LEDs.
+        const power = reducedMotion.matches
+            ? Number(top <= start)
+            : clamp((start - top) / distance);
+        pins.forEach((pin) => pin.style.setProperty("--pin-power", power));
+    }
+
+    function schedulePaint() {
+        if (frame === null) frame = window.requestAnimationFrame(paint);
+    }
+
+    window.addEventListener("scroll", schedulePaint, { passive: true });
+    window.addEventListener("resize", schedulePaint);
+    window.addEventListener("pageshow", schedulePaint);
+    reducedMotion.addEventListener("change", schedulePaint);
+    paint();
+}
+
+$(document).ready(initScheduleLighting);

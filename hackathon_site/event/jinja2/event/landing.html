@@ -206,88 +206,61 @@
         </div>
     </div>
 
-    <div class="container colorScroll" data-background-color="#035E8A">
-        <div class="section scrollspy" id="schedule">
-            <div class="row schedule">
-                <div class="m12 center">
-                    <h3 class="center">Schedule (2026)</h3>
-                </div>
-                <div class="col s12 m6 l6">
-                    <h4 class="white-text" style="text-align:center; flex-grow:1;">
-                            Saturday
-                    </h4>
-
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">8:30AM</p>
-                        <p>Participant Registration</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">10AM</p>
-                        <p>Hacking Begins!</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">10AM</p>
-                        <p>Hardware Component Distribution</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">12PM</p>
-                        <p>Lunch</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">6PM</p>
-                        <p>3D printing submissions close</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">6PM</p>
-                        <p>Dinner</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">8PM</p>
-                        <p>Hardware room closes for Saturday (Orders after 8 PM can be picked up 7 AM on Sunday)</p>
-                    </div>
-                </div>
-
-            <div class="col s12 m6 l6">
-                    <h4 class="white-text" style="text-align:center; flex-grow:1;">
-                            Sunday
-                    </h4>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">7AM</p>
-                        <p>Hardware room opens for Sunday</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">8AM</p>
-                        <p>Breakfast</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">9AM</p>
-                        <p>Hardware room closes for Sunday</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">10AM</p>
-                        <p>Hacking Ends!</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">11AM</p>
-                        <p>Lunch</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">12PM</p>
-                        <p>Judging Begins</p>
-                    </div>
-                    <div class="scheduleRow">
-                        <p class="scheduleTime">3PM</p>
-                        <p>Closing Ceremony</p>
-                    </div>
-                </div>
-
-
+    <section class="scheduleSection colorScroll" data-background-color="#FFFFFF" aria-labelledby="schedule-title">
+        <div class="container section scrollspy" id="schedule">
+            <h3 id="schedule-title" class="center">Schedule (2026)</h3>
+            <div class="schedule">
+                {% for corner in ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'] %}
+                    <span class="schedulePin schedulePin--{{ corner }}" aria-hidden="true"></span>
+                {% endfor %}
+                {% set days = [
+                    ('Saturday', 'SAT', '01', [
+                        ('08:30', '8:30AM', 'Participant Registration', ''),
+                        ('10:00', '10AM', 'Hacking Begins!', ''),
+                        ('10:00', '10AM', 'Hardware Component Distribution', ''),
+                        ('12:00', '12PM', 'Lunch', ''),
+                        ('18:00', '6PM', '3D printing submissions close', ''),
+                        ('18:00', '6PM', 'Dinner', ''),
+                        ('20:00', '8PM', 'Hardware room closes for Saturday', 'Orders after 8 PM can be picked up at 7 AM on Sunday.')
+                    ]),
+                    ('Sunday', 'SUN', '02', [
+                        ('07:00', '7AM', 'Hardware room opens for Sunday', ''),
+                        ('08:00', '8AM', 'Breakfast', ''),
+                        ('09:00', '9AM', 'Hardware room closes for Sunday', ''),
+                        ('10:00', '10AM', 'Hacking Ends!', ''),
+                        ('11:00', '11AM', 'Lunch', ''),
+                        ('12:00', '12PM', 'Judging Begins', ''),
+                        ('15:00', '3PM', 'Closing Ceremony', '')
+                    ])
+                ] %}
+                {% for day, short_day, number, events in days %}
+                    <section class="scheduleDay" aria-labelledby="schedule-day-{{ number }}">
+                        <header class="scheduleHeader">
+                            <div>
+                                <p class="scheduleEyebrow">{{ short_day }} · Day {{ number }}</p>
+                                <h4 id="schedule-day-{{ number }}">{{ day }}</h4>
+                            </div>
+                            <div class="scheduleStatus" aria-label="Day status">
+                                <span class="scheduleIndicator" data-state="off"><span class="scheduleStatusDot" aria-hidden="true"></span>Live <span class="scheduleStatusValue">Off</span></span>
+                            </div>
+                        </header>
+                        <ol class="scheduleEvents">
+                            {% for time, display_time, title, note in events %}
+                                <li class="scheduleEvent">
+                                    <time datetime="{{ time }}">{{ display_time }}</time>
+                                    <p>{{ title }}</p>
+                                    {% if note %}<p class="scheduleNote">{{ note }}</p>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </section>
+                {% endfor %}
             </div>
-            <div class="m12 center">
+            <div class="center scheduleFooter">
                 <a href="https://docs.google.com/document/d/1Ui_ymFZ0fvkTWReaLKW9xdoBdV8rvJ56uL9ls9XOkmk/edit?usp=sharing" class="btn-large waves-effect waves-light colorBtn" rel="noopener" target="_blank">Full schedule</a>
             </div>
         </div>
-    </div>
+    </section>
     <br /><br /><br />
 
     <div class="container colorScroll" data-background-color="#003650">

@@ -343,37 +343,222 @@ nav ul a {
 // End of "About" section
 
 // "Schedule" section
+.scheduleSection {
+    background: #fff;
+    color: #333;
+    padding: 38px 0;
+
+    > .container {
+        max-width: 1000px;
+        width: 90%;
+    }
+
+    h3 {
+        color: #333;
+        font-size: 25px;
+        letter-spacing: 3px;
+        margin: 0 0 34px;
+    }
+
+    #schedule {
+        scroll-margin-top: 90px;
+    }
+}
+
 .schedule {
-    margin: 10px 0 30px;
+    border: 1.5px solid #65abda;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    position: relative;
+    text-align: left;
 
-    h5 {
-        font-family: font(header);
-        font-weight: 500;
+    &Day + &Day {
+        border-left: 1px solid #9bc6e2;
     }
 
-    p {
-        font-size: size(xl);
-        margin: 0;
+    &Header {
+        align-items: center;
+        border-bottom: 1px solid #9bc6e2;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 28px;
+
+        h4 {
+            color: #333;
+            font-family: font(header);
+            font-size: 27px;
+            font-weight: 700;
+            margin: 5px 0 0;
+        }
     }
 
-    &Time {
-        margin-right: 20px !important;
-        font-weight: bold;
+    &Eyebrow {
+        color: #357fae;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    &Status {
+        align-self: flex-end;
+        display: grid;
+        gap: 6px;
+        margin-bottom: 3px;
+        margin-left: 12px;
+    }
+
+    &Indicator {
+        align-items: center;
+        background: #f7f8f9;
+        border: 1px solid #e0e5e8;
+        border-radius: 3px;
+        color: #626d75;
+        display: flex;
+        font-size: 9px;
+        font-weight: 700;
+        gap: 6px;
+        letter-spacing: 0.8px;
+        padding: 4px 6px;
+        text-transform: uppercase;
         white-space: nowrap;
     }
 
-    &Row {
-        display: flex;
-        margin: 10px 0 25px;
-        justify-content: center;
+    &StatusDot {
+        background: #ccd2d6;
+        border: 1px solid #abb4bc;
+        border-radius: 50%;
+        height: 6px;
+        width: 6px;
     }
 
-    @include responsive(md-down) {
-        p {
-            font-size: size(lg);
+    &StatusValue {
+        color: #727c83;
+        margin-left: auto;
+    }
+
+    &Events {
+        list-style: none;
+        margin: 0;
+        padding: 28px 28px 30px 46px;
+    }
+
+    &Event {
+        padding: 0 0 23px 16px;
+        position: relative;
+
+        // Timeline wires and event lamps stay static; only the outer LEDs animate.
+        &::before {
+            background: #65abda;
+            bottom: -7px;
+            content: "";
+            left: -20px;
+            position: absolute;
+            top: 8px;
+            width: 1.5px;
         }
-        &Time {
-            width: 70px;
+        &::after {
+            background: #e7e2d6;
+            border: 1.5px solid #bfb49a;
+            border-radius: 50%;
+            content: "";
+            height: 12px;
+            left: -25px;
+            position: absolute;
+            top: 5px;
+            width: 12px;
+        }
+        &:last-child {
+            padding-bottom: 0;
+            &::before {
+                bottom: auto;
+                height: 20px;
+            }
+        }
+
+        time {
+            color: #946000;
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            line-height: 1.5;
+        }
+        p {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.5;
+            margin: 2px 0 0;
+        }
+        .scheduleNote {
+            color: #666;
+            font-size: 13px;
+            margin-top: 5px;
+            max-width: 330px;
+        }
+    }
+
+    &Pin {
+        --pin-power: 0;
+        background: rgb(
+            calc(170 + 85 * var(--pin-power)),
+            calc(158 + 58 * var(--pin-power)),
+            calc(125 - 61 * var(--pin-power))
+        );
+        border: 1.5px solid #f5a623;
+        border-radius: 2px;
+        box-shadow: 0 0 5px rgba(255, 196, 72, var(--pin-power)),
+            0 0 14px rgba(255, 174, 0, calc(var(--pin-power) * 0.5));
+        transition: background-color 150ms ease, box-shadow 150ms ease;
+        height: 14px;
+        position: absolute;
+        width: 14px;
+        z-index: 1;
+        &--topLeft {
+            left: -7px;
+            top: -7px;
+        }
+        &--topRight {
+            right: -7px;
+            top: -7px;
+        }
+        &--bottomLeft {
+            left: -7px;
+            bottom: -7px;
+        }
+        &--bottomRight {
+            right: -7px;
+            bottom: -7px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &Pin {
+            transition: none;
+        }
+    }
+
+    &Footer {
+        margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        &Day + &Day {
+            border-left: 0;
+            border-top: 1.5px solid #65abda;
+        }
+        &Header {
+            padding: 20px 22px;
+        }
+        &Events {
+            padding: 24px 22px 28px 40px;
+        }
+        &Header h4 {
+            font-size: 24px;
+        }
+        &Event p {
+            font-size: 14px;
         }
     }
 }
