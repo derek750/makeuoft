@@ -37,6 +37,7 @@ def environment(**options):
             "registration_open_date": settings.REGISTRATION_OPEN_DATE,
             "registration_close_date": settings.REGISTRATION_CLOSE_DATE,
             "event_start_date": settings.EVENT_START_DATE,
+            "event_time_zone": settings.TIME_ZONE,
             "event_end_date": settings.EVENT_END_DATE,
             "waitlisted_acceptance_start_time": settings.WAITLISTED_ACCEPTANCE_START_TIME,
             "final_review_response_date": settings.FINAL_REVIEW_RESPONSE_DATE,

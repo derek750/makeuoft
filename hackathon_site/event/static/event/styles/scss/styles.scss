@@ -424,6 +424,36 @@ nav ul a {
         white-space: nowrap;
     }
 
+    &Indicator[data-state="on"] {
+        background: #fff8df;
+        border-color: #e7b43b;
+        color: #755100;
+
+        .scheduleStatusDot {
+            background: #ffd840;
+            border-color: #f5a623;
+            box-shadow: 0 0 7px rgba(255, 174, 0, 0.65);
+        }
+        .scheduleStatusValue {
+            color: #755100;
+        }
+    }
+
+    &Event[data-state="on"]::after {
+        background: #ffd840;
+        border-color: #f5a623;
+        box-shadow: 0 0 6px rgba(255, 190, 0, 0.8), 0 0 13px rgba(255, 174, 0, 0.4);
+    }
+
+    &EventStatus {
+        clip-path: inset(50%);
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+    }
+
     &StatusDot {
         background: #ccd2d6;
         border: 1px solid #abb4bc;
@@ -447,7 +477,7 @@ nav ul a {
         padding: 0 0 23px 16px;
         position: relative;
 
-        // Timeline wires and event lamps stay static; only the outer LEDs animate.
+        // Timeline wires stay static; event lamps follow the configured date and time.
         &::before {
             background: #65abda;
             bottom: -7px;

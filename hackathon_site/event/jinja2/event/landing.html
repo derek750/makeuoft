@@ -208,8 +208,8 @@
 
     <section class="scheduleSection colorScroll" data-background-color="#FFFFFF" aria-labelledby="schedule-title">
         <div class="container section scrollspy" id="schedule">
-            <h3 id="schedule-title" class="center">Schedule (2026)</h3>
-            <div class="schedule">
+            <h3 id="schedule-title" class="center">Schedule ({{ event_start_date.year }})</h3>
+            <div class="schedule" data-start-date="{{ event_start_date|strftime('%Y-%m-%d') }}" data-time-zone="{{ event_time_zone }}">
                 {% for corner in ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'] %}
                     <span class="schedulePin schedulePin--{{ corner }}" aria-hidden="true"></span>
                 {% endfor %}
@@ -234,7 +234,7 @@
                     ])
                 ] %}
                 {% for day, short_day, number, events in days %}
-                    <section class="scheduleDay" aria-labelledby="schedule-day-{{ number }}">
+                    <section class="scheduleDay" data-day-offset="{{ loop.index0 }}" aria-labelledby="schedule-day-{{ number }}">
                         <header class="scheduleHeader">
                             <div>
                                 <p class="scheduleEyebrow">{{ short_day }} · Day {{ number }}</p>
@@ -246,9 +246,10 @@
                         </header>
                         <ol class="scheduleEvents">
                             {% for time, display_time, title, note in events %}
-                                <li class="scheduleEvent">
+                                <li class="scheduleEvent" data-state="off">
                                     <time datetime="{{ time }}">{{ display_time }}</time>
                                     <p>{{ title }}</p>
+                                    <span class="scheduleEventStatus">Upcoming</span>
                                     {% if note %}<p class="scheduleNote">{{ note }}</p>{% endif %}
                                 </li>
                             {% endfor %}
@@ -467,6 +468,7 @@
 <script src="{{ static('event/js/sponsors-data.js') }}"></script>
 <script src="{{ static('event/js/sponsors-component.js') }}"></script>
 <script src="{{ static('event/js/landing.js') }}"></script>
+<script src="{{ static('event/js/schedule-live.js') }}"></script>
 
 <!-- Select2 JS for the MLH interest form -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
