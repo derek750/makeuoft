@@ -1,0 +1,56 @@
+<section class="hackathonStats colorScroll" data-background-color="#FFFFFF" aria-labelledby="hackathon-stats-title">
+        <div class="container section">
+            <h3 id="hackathon-stats-title">2026 Hackathon Stats</h3>
+            <div class="hackathonStats-board">
+                <div class="hackathonStats-wiring" aria-hidden="true">
+                    <span class="hackathonStats-bus"></span>
+                    {# Each route consists of native CSS lines between circuit coordinates. #}
+                    {% for route in [
+                        [(80, 56), (80, 33), (102, 12), (162, 12)],
+                        [(117, 56), (117, 88), (145, 109), (313, 109), (338, 88), (338, 31), (360, 12), (366, 12)],
+                        [(506, 56), (506, 89), (526, 109), (660, 109), (680, 88), (680, 56)],
+                        [(632, 12), (695, 12), (717, 33), (717, 56)]
+                    ] %}
+                        {% for point in route[:-1] %}
+                            {% set next = route[loop.index] %}
+                            {% set dx = next[0] - point[0] %}
+                            {% set dy = next[1] - point[1] %}
+                            <span class="hackathonStats-trace{% if dx and dy %} hackathonStats-trace--diagonal{% endif %}" style="left: {{ point[0] / 8 }}%; top: {{ point[1] / 1.46 }}%; width: {{ (dx|abs) / 8 }}%; height: {{ (dy|abs) / 1.46 }}%; --trace-direction: {{ -1 if dx * dy < 0 else 1 }}; --trace-rise: {{ -100 if dy < 0 else 0 }}%;"></span>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for x in [24, 80, 117, 680, 717, 774] %}
+                        <span class="hackathonStats-node" style="left: {{ x / 8 }}%;"></span>
+                    {% endfor %}
+                    {% for x in [24, 774] %}
+                        <span class="hackathonStats-terminal" style="left: {{ x / 8 }}%;"></span>
+                    {% endfor %}
+                    {% for x in [338, 508] %}
+                        <span class="hackathonStats-resistor" style="left: {{ x / 8 }}%;"></span>
+                    {% endfor %}
+                </div>
+                <dl class="hackathonStats-readouts">
+                    {# Change the values here; CSS segments render every digit from 0 to 9. #}
+                    {% for name, value in [('hackers', '317'), ('projects', '92'), ('sponsors', '7')] %}
+                        <div class="hackathonStats-stat hackathonStats-{{ name }}">
+                            <dt>{{ name|capitalize }}</dt>
+                            <dd>
+                                <span class="hackathonStats-value">{{ value }}</span>
+                                <span class="hackathonStats-digits" aria-hidden="true">
+                                    {% for digit in value %}
+                                        <span class="hackathonStats-digit" data-digit="{{ digit }}">
+                                            {% for segment in 'abcdefg' %}
+                                                <span class="hackathonStats-segment hackathonStats-segment--{{ segment }}"></span>
+                                            {% endfor %}
+                                        </span>
+                                    {% endfor %}
+                                </span>
+                                {% for corner in ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'] %}
+                                    <span class="hackathonStats-pin hackathonStats-pin--{{ corner }}" aria-hidden="true"></span>
+                                {% endfor %}
+                            </dd>
+                        </div>
+                    {% endfor %}
+                </dl>
+            </div>
+        </div>
+    </section>
