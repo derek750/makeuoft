@@ -85,7 +85,7 @@ class IndexViewTestCase(SetupUserMixin, TestCase):
     """
     Tests for the landing page template.
 
-    We test for correct rendering and rendering of Logout/Register Your Interest buttons
+    We test the landing page links for open and closed registration.
     """
 
     def setUp(self):
@@ -95,8 +95,12 @@ class IndexViewTestCase(SetupUserMixin, TestCase):
     def test_index_view(self):
         response = self.client.get(self.view)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertContains(response, "Register Your Interest")
-        self.assertContains(response, 'href="#interest"')
+        self.assertContains(
+            response,
+            'class="btn-small waves-effect waves-light colorBtn">Apply</a>',
+            count=2,
+        )
+        self.assertNotContains(response, "Register Your Interest")
         self.assertContains(response, "Apply")
         self.assertContains(response, reverse("registration:signup"))
 
@@ -134,9 +138,12 @@ class IndexViewTestCase(SetupUserMixin, TestCase):
         mock_is_registration_open.return_value = False
         response = self.client.get(self.view)
         self.assertNotContains(response, reverse("registration:signup"))
+        self.assertNotContains(response, 'href="#interest"')
 
-    def test_interest_form_renders(self):
+    @patch("event.views.is_registration_open")
+    def test_interest_form_renders(self, mock_is_registration_open):
         """The public MLH interest form and its checkboxes render on the page."""
+        mock_is_registration_open.return_value = False
         response = self.client.get(self.view)
         self.assertContains(response, "Register Your Interest")
         self.assertContains(response, "MLH Code of Conduct")

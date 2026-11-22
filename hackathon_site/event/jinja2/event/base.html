@@ -50,9 +50,11 @@
                                     <a href="{{ url("event:logout") }}" class="btn-small waves-effect waves-light colorBtn">Logout</a>
                                 </li>
                             {% else %}
-                                <li>
-                                    <a href="#interest" class="btn-small waves-effect waves-light colorBtn">Register Your Interest</a>
-                                </li>
+                                {% if is_registration_open() %}
+                                    <li>
+                                        <a href="{{ url('registration:signup') }}" class="btn-small waves-effect waves-light colorBtn">Apply</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
                         {% endblock %}
                     </ul>

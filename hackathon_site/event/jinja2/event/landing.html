@@ -102,6 +102,7 @@
     </div>
     <br />
 
+    {% if not is_registration_open() %}
     <div class="container colorScroll" data-background-color="#fff">
         <div class="section scrollspy" id="interest">
             {% set msgs = get_messages(request) %}
@@ -169,6 +170,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     <div class="container colorScroll" data-background-color="#fff">
         <div class="section scrollspy" id="about">
