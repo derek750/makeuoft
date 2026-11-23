@@ -337,17 +337,17 @@ class InterestSubmission(models.Model):
         help_text="I authorize you to share my application/registration information with Major League Hacking"
         " for event administration, ranking, and administration (including the creation of linked accounts on MLH and "
         '<a href="https://dev.to" rel="noopener noreferrer" target="_blank">DEV</a>) in line with the '
-        "MLH Privacy Policy. "
+        '<a href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md" rel="noopener noreferrer" target="_blank">MLH Privacy Policy</a>. '
         "I further agree to the terms of both the "
         '<a href="https://github.com/MLH/mlh-policies/blob/main/contest-terms.md" rel="noopener noreferrer" target="_blank">MLH Contest Terms and Conditions</a>'
         " and the "
-        "MLH Privacy Policy.",
+        '<a href="https://github.com/MLH/mlh-policies/blob/main/privacy-policy.md" rel="noopener noreferrer" target="_blank">MLH Privacy Policy</a>.',
         blank=False,
         null=False,
         default=False,
     )
     email_agree = models.BooleanField(
-        help_text="I authorize MLH + DEV to send me occasional emails about relevant events, career opportunities, and community announcements.",
+        help_text="I authorize MLH and DEV to send me occasional emails about relevant events, career opportunities, and community announcements.",
         blank=True,
         null=True,
         default=False,
