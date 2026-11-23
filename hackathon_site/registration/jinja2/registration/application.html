@@ -6,7 +6,25 @@
     <link rel="stylesheet" type="text/css" href="{{ static('event/styles/css/select2.css') }}"/>
 
     <style>
+        .input-field.static-label {
+            margin-top: 0;
+        }
 
+        .input-field.static-label > label {
+            position: static;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+            font-size: 0.8rem !important;
+            line-height: 1.4;
+            white-space: normal;
+            transform: none !important;
+        }
+
+        .input-field.static-label > textarea.materialize-textarea {
+            min-height: 3rem;
+            padding-top: 0.8rem;
+        }
     </style>
 {% endblock %}
 
@@ -74,10 +92,9 @@
     </div>
     {{ render_field(form.how_many_hackathons, show_help_text_as_label=True, size="s12 select2-wrapper") }}
     {{ render_field(form.past_hackathon_info, show_help_text_as_label=True) }}
-    {{ render_field(form.why_participate, show_help_text_as_label=True) }}
-    {{ render_field(form.what_technical_experience, show_help_text_as_label=True) }}
-    {{ render_field(form.what_past_experience, show_help_text_as_label=True) }}
-    {{ render_field(form.one_million_dollars_investment, show_help_text_as_label=True) }}
+    {{ render_field(form.community_problem, show_help_text_as_label=True, label_above=True) }}
+    {{ render_field(form.proud_project, show_help_text_as_label=True, label_above=True) }}
+    {{ render_field(form.deadline_plan, show_help_text_as_label=True, label_above=True) }}
     {{ render_field(form.discovery_method, show_help_text_as_label=True, size="s12 select2-wrapper") }}
 
     <div class="col s12">

@@ -148,10 +148,9 @@ class ApplicationForm(forms.ModelForm):
             "devpost",
             "how_many_hackathons",
             "past_hackathon_info",
-            "what_past_experience",
-            "why_participate",
-            "what_technical_experience",
-            "one_million_dollars_investment",
+            "community_problem",
+            "proud_project",
+            "deadline_plan",
             "discovery_method",
             "conduct_agree",
             "logistics_agree",
@@ -187,32 +186,24 @@ class ApplicationForm(forms.ModelForm):
                     "data-length": 1000,
                 }
             ),
-            "what_past_experience": forms.Textarea(
+            "community_problem": forms.Textarea(
                 attrs={
                     "class": "materialize-textarea",
-                    "placeholder": "The most significant challenge I faced in a project/hackathon was...",
-                    "data-length": 1000,
-                    "style": "padding-top: 38px;",
-                }
-            ),
-            "why_participate": forms.Textarea(
-                attrs={
-                    "class": "materialize-textarea",
-                    "placeholder": "I want to participate in MakeUofT because...",
+                    "placeholder": "I would use technology to solve...",
                     "data-length": 1000,
                 }
             ),
-            "what_technical_experience": forms.Textarea(
+            "proud_project": forms.Textarea(
                 attrs={
                     "class": "materialize-textarea",
-                    "placeholder": "My technical experience with software and hardware are...",
+                    "placeholder": "One project I was especially proud of was...",
                     "data-length": 1000,
                 }
             ),
-            "one_million_dollars_investment": forms.Textarea(
+            "deadline_plan": forms.Textarea(
                 attrs={
                     "class": "materialize-textarea",
-                    "placeholder": "If I had a million dollars to invest in one technology brand, it would be...",
+                    "placeholder": "My plan would be...",
                     "data-length": 1000,
                 }
             ),

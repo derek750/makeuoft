@@ -1,9 +1,12 @@
 {% extends "event/base.html" %}
 
-{% macro render_field(field, show_help_text=False, show_label=True, show_help_text_as_label=False, size="s12", id="") %}
-    <div class="input-field row col {{ size }}" id="{{ id }}">
+{% macro render_field(field, show_help_text=False, show_label=True, show_help_text_as_label=False, size="s12", id="", label_above=False) %}
+    <div class="input-field row col {{ size }}{% if label_above %} static-label{% endif %}" id="{{ id }}">
+        {% if show_label and label_above %}
+            <label for="{{ field.id_for_label }}">{{ field.help_text|safe or field.label }}</label>
+        {% endif %}
         {{ field }}
-        {% if show_label %}
+        {% if show_label and not label_above %}
             {% if show_help_text_as_label %}
                 <label for="{{ field.id_for_label }}">{{ field.help_text|safe or field.label}}</label>
             {% else %}
