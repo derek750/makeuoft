@@ -6,23 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registration', '0015_fix_mlh_dev_link_text'),
+        ("registration", "0015_fix_mlh_dev_link_text"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='application',
-            name='community_problem',
-            field=models.TextField(default='', help_text='What is one problem in your community or everyday life that you would like to solve through technology?', max_length=1000),
+            model_name="application",
+            name="community_problem",
+            field=models.TextField(
+                default="",
+                help_text="What is one problem in your community or everyday life that you would like to solve through technology?",
+                max_length=1000,
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='deadline_plan',
-            field=models.TextField(default='', help_text='It’s 11 PM, and you have a project due at 11 AM tomorrow. Would you choose to stay up late or wake up early to finish it, and what would your plan be?', max_length=1000),
+            model_name="application",
+            name="deadline_plan",
+            field=models.TextField(
+                default="",
+                help_text="It’s 11 PM, and you have a project due at 11 AM tomorrow. Would you choose to stay up late or wake up early to finish it, and what would your plan be?",
+                max_length=1000,
+            ),
         ),
         migrations.AddField(
-            model_name='application',
-            name='proud_project',
-            field=models.TextField(default='', help_text='Tell us a project that you have made in the past (technical or non-technical) that you are most proud of? What aspect of that project stood out to you?', max_length=1000),
+            model_name="application",
+            name="proud_project",
+            field=models.TextField(
+                default="",
+                help_text="Tell us a project that you have made in the past (technical or non-technical) that you are most proud of? What aspect of that project stood out to you?",
+                max_length=1000,
+            ),
         ),
     ]
